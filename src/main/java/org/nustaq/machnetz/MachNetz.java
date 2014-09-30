@@ -21,6 +21,12 @@ import java.util.Date;
  */
 public class MachNetz extends ActorWSServer {
 
+	static String REALLIVECSS = "/home/ruedi/IdeaProjects/RealLive/src/js/reallive.css";
+	static String REALLIVEJS = "/home/ruedi/IdeaProjects/RealLive/src/js/reallive.js";
+	static String REALLIVEANGULAR = "/home/ruedi/IdeaProjects/RealLive/src/js/rl-angular.js";
+	static String MINBIN = "/home/ruedi/IdeaProjects/fast-serialization/src/main/javascript/minbin.js";
+
+	boolean DEVMAPPINGGS = true;
     // FIXME: need exception mode for blocking clients
 
     private RealLive realLive;
@@ -31,7 +37,28 @@ public class MachNetz extends ActorWSServer {
         initServer();
     }
 
-    @Override
+	@Override
+	protected File mapFileName(File target) {
+		if ( ! DEVMAPPINGGS )
+			return super.mapFileName(target);
+		if ( target != null && target.getName() != null ) {
+			if ( target.getName().equals("reallive.css") ) {
+				return new File(REALLIVECSS);
+			}
+			if ( target.getName().equals("reallive.js") ) {
+				return new File(REALLIVEJS);
+			}
+			if ( target.getName().equals("rl-angular.js") ) {
+				return new File(REALLIVEANGULAR);
+			}
+			if ( target.getName().equals("minbin.js") ) {
+				return new File(MINBIN);
+			}
+		}
+		return super.mapFileName(target);
+	}
+
+	@Override
     protected Class getClientActorClazz() {
         return MNClientSession.class;
     }
