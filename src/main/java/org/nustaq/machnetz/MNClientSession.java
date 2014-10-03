@@ -52,8 +52,8 @@ public class MNClientSession<T extends MNClientSession> extends ActorWSClientSes
     RealLive realLive;
     String traderKey;
 
-    public void $init(ActorWSServer machNetz, int sessionId) {
-        super.$init(machNetz, sessionId);
+    public void $init(ActorWSServer machNetz, int sessionId, ActorWSServer.Coding coding) {
+        super.$init(machNetz, sessionId, null);
         Thread.currentThread().setName("MNClientSession"+sessionId);
         mnserver = (MachNetz) machNetz;
         lookup = MethodHandles.lookup();

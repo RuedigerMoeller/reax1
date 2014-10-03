@@ -33,7 +33,7 @@ public class MachNetz extends ActorWSServer {
     Matcher matcher;
 
     public MachNetz(File contentRoot) {
-        super(contentRoot);
+        super(contentRoot, Coding.FSTSer);
         initServer();
     }
 
