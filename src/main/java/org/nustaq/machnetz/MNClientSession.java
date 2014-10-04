@@ -53,7 +53,7 @@ public class MNClientSession<T extends MNClientSession> extends ActorWSClientSes
     String traderKey;
 
     public void $init(ActorWSServer machNetz, int sessionId, ActorWSServer.Coding coding) {
-        super.$init(machNetz, sessionId, null);
+        super.$init(machNetz, sessionId, coding);
         Thread.currentThread().setName("MNClientSession"+sessionId);
         mnserver = (MachNetz) machNetz;
         lookup = MethodHandles.lookup();
