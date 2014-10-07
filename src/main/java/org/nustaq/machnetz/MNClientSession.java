@@ -112,7 +112,7 @@ public class MNClientSession<T extends MNClientSession> extends ActorWSClientSes
         } catch (RuntimeException ex) {
             ex.printStackTrace();
             System.out.println("received:");
-            MBPrinter.printMessage(buffer);
+//            MBPrinter.printMessage(buffer);
             return;
         }
 //        System.out.println("  minmsg "+msg);
