@@ -4,6 +4,7 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import org.nustaq.kontraktor.Actor;
 import org.nustaq.kontraktor.Actors;
+import org.nustaq.kontraktor.remoting.RemoteRefRegistry;
 import org.nustaq.kontraktor.remoting.http.netty.util.ActorWSServer;
 import org.nustaq.machnetz.model.rlxchange.*;
 import org.nustaq.machnetz.rlxchange.Matcher;
@@ -33,7 +34,7 @@ public class MachNetz extends ActorWSServer {
     Matcher matcher;
 
     public MachNetz(File contentRoot) {
-        super(contentRoot, Coding.FSTSer);
+        super(contentRoot, RemoteRefRegistry.Coding.FSTSer);
         initServer();
     }
 
