@@ -27,7 +27,7 @@ public class MachNetz extends ActorWSServer {
 	static String REALLIVEANGULAR = "/home/ruedi/IdeaProjects/RealLive/src/js/rl-angular.js";
 	static String MINBIN = "/home/ruedi/IdeaProjects/fast-serialization/src/main/javascript/minbin.js";
 
-	boolean DEVMAPPINGGS = true;
+	boolean DEVMAPPINGGS = false;
     // FIXME: need exception mode for blocking clients
 
     private RealLive realLive;
