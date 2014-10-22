@@ -4,6 +4,8 @@ import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import org.nustaq.kontraktor.Actor;
 import org.nustaq.kontraktor.Actors;
+import org.nustaq.kontraktor.Future;
+import org.nustaq.kontraktor.Promise;
 import org.nustaq.kontraktor.remoting.RemoteRefRegistry;
 import org.nustaq.kontraktor.remoting.http.netty.util.ActorWSServer;
 import org.nustaq.kontraktor.remoting.http.rest.RestActorServer;
@@ -201,6 +203,10 @@ public class MachNetz extends ActorWSServer {
             mn.feeder.$stopFeed();
         }
 
+        public Future addUser( String user, String pwd ) {
+            return new Promise("Added User");
+        }
+
         public void $shutDown() {
             mn.feeder.$stop();
             mn.matcher.$stop();
@@ -208,7 +214,6 @@ public class MachNetz extends ActorWSServer {
             System.exit(0);
         }
     }
-
 
     public static class Feeder extends Actor<Feeder> {
 
