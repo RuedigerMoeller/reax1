@@ -6,6 +6,7 @@ import org.nustaq.kontraktor.Actor;
 import org.nustaq.kontraktor.Actors;
 import org.nustaq.kontraktor.remoting.RemoteRefRegistry;
 import org.nustaq.kontraktor.remoting.http.netty.util.ActorWSServer;
+import org.nustaq.kontraktor.remoting.http.rest.RestActorServer;
 import org.nustaq.machnetz.model.rlxchange.*;
 import org.nustaq.machnetz.rlxchange.Matcher;
 import org.nustaq.netty2go.NettyWSHttpServer;
@@ -30,8 +31,9 @@ public class MachNetz extends ActorWSServer {
 	boolean DEVMAPPINGGS = false;
     // FIXME: need exception mode for blocking clients
 
-    private RealLive realLive;
+    RealLive realLive;
     Matcher matcher;
+    Feeder feeder;
 
     public MachNetz(File contentRoot) {
         super(contentRoot, RemoteRefRegistry.Coding.FSTSer);
@@ -168,30 +170,71 @@ public class MachNetz extends ActorWSServer {
                     matcher = Actors.AsActor(Matcher.class);
                     matcher.$init(realLive);
 
-                    Feeder feeder = Actors.AsActor(Feeder.class);
-                    feeder.$feed0(realLive,matcher);
+                    feeder = Actors.AsActor(Feeder.class);
+                    feeder.$init(realLive, matcher);
+
+                    MNAdmin admin = Actors.AsActor(MNAdmin.class);
+                    admin.$init(this);
+
+                    RestActorServer.publish("admin",8886,admin);
                 } else {
                     System.out.println("instr change "+change.getRecord());
                 }
             });
 
         });
-
     }
 
-    volatile static boolean stopF = false;
-    public static void stopFeed() {
-        stopF = true;
+    public static class MNAdmin extends Actor<MNAdmin> {
+
+        MachNetz mn;
+
+        public void $init(MachNetz mn) {
+            this.mn = mn;
+        }
+
+        public void $startFeed() {
+            mn.feeder.$startFeed();
+        }
+
+        public void $stopFeed() {
+            mn.feeder.$stopFeed();
+        }
+
+        public void $shutDown() {
+            mn.feeder.$stop();
+            mn.matcher.$stop();
+            mn.realLive.shutDown();
+            System.exit(0);
+        }
     }
+
+
     public static class Feeder extends Actor<Feeder> {
 
-        public void $feed0( RealLive rl, Matcher m ) {
+        boolean running;
+        RealLive rl;
+        Matcher matcher;
+
+        public void $init(RealLive rl, Matcher m) {
+            this.rl = rl;
+            this.matcher = m;
+        }
+
+        public void $stopFeed() {
+            running = false;
+        }
+
+        public void $startFeed() {
+            if ( running )
+                return;
+            running = true;
             Thread.currentThread().setName("Feeder");
-            delayed(5000, () -> self().$feed(rl,m));
+            delayed(5000, () -> self().$feed());
         }
 
         int orderCount = 0;
-        public void $feed( RealLive rl, Matcher m ) {
+        public void $feed() {
             RLTable<Instrument> instr = rl.getTable("Instrument");
             instr.stream().each((change) -> {
                 if ("USA".equals(change.getRecordKey())) {
@@ -243,17 +286,16 @@ public class MachNetz extends ActorWSServer {
                                 t += " poaskdpaokds";
                             newOrder.setText(t);
                             // newOrder.$apply(2);
-                            m.$addOrder(newOrder);
+                            matcher.$addOrder(newOrder);
                             orderCount++;
                         }
                     }
                 }
             });
-            if ( ! stopF ) {
-                delayed(2000, () -> self().$feed(rl,m));
+            if ( running ) {
+                delayed(2000, () -> self().$feed());
             }
         }
-
     }
 
     public static class CmdLine {

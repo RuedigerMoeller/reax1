@@ -258,10 +258,6 @@ public class MNClientSession<T extends MNClientSession> extends ActorWSClientSes
     Object addOrder(Invocation inv) {
         RLTable<Order> order = getRLDB().getTable("Order");
         Order toAdd = (Order) inv.getArgument();
-        if ( "stop".equals(toAdd.getText() ) ) {
-            MachNetz.stopFeed();
-            return NO_RESULT;
-        }
         toAdd.setCreationTime(System.currentTimeMillis());
         mnserver.getMatcher().$addOrder(toAdd).then( (r,e) -> {
             sendReply(inv, r != null ? r : "");
