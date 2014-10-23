@@ -7,7 +7,7 @@ import org.nustaq.kontraktor.Actors;
 import org.nustaq.kontraktor.Future;
 import org.nustaq.kontraktor.Promise;
 import org.nustaq.kontraktor.remoting.RemoteRefRegistry;
-import org.nustaq.kontraktor.remoting.http.netty.util.ActorWSServer;
+import org.nustaq.kontraktor.remoting.http.netty.wsocket.ActorWSServer;
 import org.nustaq.kontraktor.remoting.http.rest.RestActorServer;
 import org.nustaq.machnetz.model.rlxchange.*;
 import org.nustaq.machnetz.rlxchange.Matcher;
@@ -38,7 +38,7 @@ public class MachNetz extends ActorWSServer {
     Feeder feeder;
 
     public MachNetz(File contentRoot) {
-        super(contentRoot, RemoteRefRegistry.Coding.FSTSer);
+        super(null,contentRoot, RemoteRefRegistry.Coding.FSTSer);
         initServer();
     }
 

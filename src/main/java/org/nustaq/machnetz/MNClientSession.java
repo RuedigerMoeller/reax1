@@ -2,8 +2,8 @@ package org.nustaq.machnetz;
 
 import io.netty.channel.ChannelHandlerContext;
 import org.nustaq.kontraktor.remoting.RemoteRefRegistry;
-import org.nustaq.kontraktor.remoting.http.netty.util.ActorWSClientSession;
-import org.nustaq.kontraktor.remoting.http.netty.util.ActorWSServer;
+import org.nustaq.kontraktor.remoting.http.netty.wsocket.ActorWSClientSession;
+import org.nustaq.kontraktor.remoting.http.netty.wsocket.ActorWSServer;
 import org.nustaq.machnetz.model.DataModel;
 import org.nustaq.machnetz.model.rlxchange.Order;
 import org.nustaq.machnetz.model.rlxchange.Position;
