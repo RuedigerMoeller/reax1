@@ -1,7 +1,7 @@
 package org.nustaq.machnetz;
 
 import io.netty.channel.ChannelHandlerContext;
-import org.nustaq.kontraktor.remoting.RemoteRefRegistry;
+import org.nustaq.kontraktor.remoting.Coding;
 import org.nustaq.kontraktor.remoting.http.netty.wsocket.ActorWSClientSession;
 import org.nustaq.kontraktor.remoting.http.netty.wsocket.ActorWSServer;
 import org.nustaq.machnetz.model.DataModel;
@@ -52,7 +52,7 @@ public class MNClientSession<T extends MNClientSession> extends ActorWSClientSes
     RealLive realLive;
     String traderKey;
 
-    public void $init(ActorWSServer machNetz, int sessionId, RemoteRefRegistry.Coding coding) {
+    public void $init(ActorWSServer machNetz, int sessionId, Coding coding) {
         super.$init(machNetz, sessionId, coding);
         Thread.currentThread().setName("MNClientSession"+sessionId);
         mnserver = (MachNetz) machNetz;
