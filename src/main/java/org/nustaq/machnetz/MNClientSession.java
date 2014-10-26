@@ -145,16 +145,7 @@ public class MNClientSession<T extends MNClientSession> extends ActorWSClientSes
 
     Object initModel(Invocation inv) {
         System.out.println("Called method initModel !!!");
-        Metadata metadata = FSTConfiguration.getDefaultConfiguration().deepCopy( getRLDB().getMetadata() );
-        try {
-            if ( new File("./annotations.dson").exists() ) {
-                SchemaConfig schemaConfig = ConfigReader.readConfig("./annotations.dson");
-                System.out.println("read config");
-                metadata.overrideWith(schemaConfig);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Metadata metadata = getRLDB().getMetadata().copyOverrideBy("./annotations.dson");
         return metadata;
     }
 
