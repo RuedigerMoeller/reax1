@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MNClientSession<T extends MNClientSession> extends ActorWSClientSession<T> implements ClientSession {
 
     private static final Object NO_RESULT = "NO_RESULT";
-    static FSTConfiguration conf = FSTConfiguration.createCrossPlatformConfiguration();
+    static FSTConfiguration conf = FSTConfiguration.createMinBinConfiguration();
     static {
         conf.registerCrossPlatformClassMappingUseSimpleName(new DataModel().getClasses());
     }
