@@ -179,7 +179,7 @@ public class MachNetz extends ActorWSServer {
                     MNAdmin admin = Actors.AsActor(MNAdmin.class);
                     admin.$init(this);
 
-                    RestActorServer.publish("admin",8886,admin);
+                    RestActorServer.Publish("admin", 8886, admin);
                 } else {
                     System.out.println("instr change "+change.getRecord());
                 }
